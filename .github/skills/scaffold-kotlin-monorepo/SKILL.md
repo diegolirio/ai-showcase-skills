@@ -1,7 +1,7 @@
 ---
 name: scaffold-kotlin-monorepo
 description: "Scaffold a Kotlin Spring Boot Gradle monorepo from scratch. Use when creating a new project with api and core modules, CQRS structure, Oracle/Flyway, Testcontainers. Generates build.gradle.kts, settings.gradle.kts, module directories, Application.kt, and .github/instructions."
-argument-hint: "Project name, group, base package (e.g., my-project ia.lirio ia.lirio.my.project)"
+argument-hint: "No arguments needed — project-name, group, and base-package are auto-detected from the workspace"
 ---
 
 # Scaffold Kotlin Spring Boot Monorepo
@@ -14,15 +14,21 @@ Creates a complete multi-module Gradle project with api + core modules following
 - Creating a monorepo with api and core modules
 - Need standardized project structure with instructions
 
-## Required Inputs
+## Required Inputs — Auto-Detection
 
-Ask the user for these values before starting:
+All inputs are captured automatically from the existing workspace. **Do NOT ask the user for these values.**
 
-| Input | Example | Description |
-|-------|---------|-------------|
-| `project-name` | `my-awesome-service` | Root project name (kebab-case) |
-| `group` | `ia.lirio` | Gradle group |
-| `base-package` | `ia.lirio.my.awesome.service` | Kotlin base package |
+| Input | How to Detect | Fallback |
+|-------|---------------|----------|
+| `project-name` | Name of the workspace root folder (e.g., folder `ai-showcase-skills` → `ai-showcase-skills`) | — |
+| `group` | Parse `group = "..."` from the root `build.gradle.kts` | Ask the user as a question |
+| `base-package` | Read the `package` declaration from the Application class (`*Application.kt` with a `fun main`) found under the api module `src/main/kotlin/` | Ask the user as a question |
+
+### Detection Procedure
+
+1. **project-name**: Use the workspace root folder name as-is (kebab-case).
+2. **group**: Read the root `build.gradle.kts` and extract the value from `group = "..."`. If the file does not exist or `group` is not declared, ask the user.
+3. **base-package**: Find the Kotlin file under `{project-name}-api/src/main/kotlin/` that contains `fun main(`. Read its `package` declaration. This is the base package. If not found, ask the user.
 
 ## Procedure
 
