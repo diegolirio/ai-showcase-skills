@@ -1,6 +1,6 @@
 # Apply Checklist (Generic)
 
-Use this checklist when applying `create-setup-tests` in any Kotlin Spring Boot repository.
+Use this checklist when applying `setup-test-integration` in any Kotlin Spring Boot repository.
 
 ## 1. Detect project values
 

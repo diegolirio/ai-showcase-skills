@@ -1,10 +1,10 @@
 ---
-name: create-setup-tests
+name: setup-test-integration
 description: "Set up reusable integration tests in Kotlin Spring Boot projects with Testcontainers Oracle, Flyway migrations in the core module, runtime Flyway disabled in application properties, and Makefile test targets. Use for new or existing projects that need a BaseIntegrationTest pattern and pipeline-ready Flyway task."
 argument-hint: "No arguments required. Auto-detect module names and base package from workspace."
 ---
 
-# Create Setup Tests
+# Setup Test Integration
 
 Configures a reusable integration test foundation for Kotlin + Spring Boot projects using Oracle Testcontainers and Flyway.
 
