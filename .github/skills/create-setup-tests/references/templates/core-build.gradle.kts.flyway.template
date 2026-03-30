@@ -1,0 +1,23 @@
+plugins {
+    id("org.flywaydb.flyway") version "11.10.5"
+}
+
+flyway {
+    url = providers.environmentVariable("FLYWAY_URL").orNull
+    user = providers.environmentVariable("FLYWAY_USER").orNull
+    password = providers.environmentVariable("FLYWAY_PASSWORD").orNull
+    locations = arrayOf("filesystem:${projectDir}/src/main/resources/db/migration")
+    placeholders = mapOf(
+        "schema" to (providers.environmentVariable("FLYWAY_SCHEMA").orElse("").get()),
+    )
+}
+
+tasks.named("bootJar") {
+    enabled = false
+}
+
+tasks.register("migratePipeline") {
+    group = "database"
+    description = "Runs Flyway migrations for pipeline environments."
+    dependsOn("flywayMigrate")
+}

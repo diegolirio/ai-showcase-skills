@@ -1,0 +1,9 @@
+package {base-package}
+
+import org.junit.jupiter.api.Test
+
+class {ApplicationName}ApplicationTests : BaseIntegrationTest() {
+    @Test
+    fun contextLoads() {
+    }
+}

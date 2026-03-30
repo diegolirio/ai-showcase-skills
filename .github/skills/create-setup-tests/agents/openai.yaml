@@ -1,0 +1,3 @@
+display_name: Create Setup Tests
+short_description: Configure reusable integration tests with Testcontainers Oracle + Flyway + Makefile targets
+default_prompt: Configure integration test setup for this Kotlin Spring Boot project using BaseIntegrationTest, Testcontainers Oracle, Flyway in core migrations, runtime Flyway disabled, and Makefile test targets.

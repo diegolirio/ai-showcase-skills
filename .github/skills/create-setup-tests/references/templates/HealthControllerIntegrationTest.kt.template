@@ -1,0 +1,20 @@
+package {base-package}.controllers
+
+import {base-package}.BaseIntegrationTest
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Import
+
+@Import(HealthController::class)
+class HealthControllerIntegrationTest : BaseIntegrationTest() {
+
+    @Autowired
+    private lateinit var healthController: HealthController
+
+    @Test
+    fun `should return ok status`() {
+        val response = healthController.health()
+        assertEquals("ok", response["status"])
+    }
+}

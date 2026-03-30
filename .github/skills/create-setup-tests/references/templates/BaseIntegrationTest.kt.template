@@ -1,0 +1,47 @@
+package {base-package}
+
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
+import org.springframework.boot.flyway.autoconfigure.FlywayAutoConfiguration
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase
+import org.springframework.boot.persistence.autoconfigure.EntityScan
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
+import org.testcontainers.oracle.OracleContainer
+import org.testcontainers.utility.DockerImageName
+import java.time.Duration
+
+@DataJpaTest
+@Testcontainers
+@ImportAutoConfiguration(FlywayAutoConfiguration::class)
+@ContextConfiguration(classes = [Test{ApplicationName}Application::class])
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@EntityScan(basePackages = ["{entity-scan-package}"])
+@EnableJpaRepositories(basePackages = ["{repository-package}"])
+abstract class BaseIntegrationTest {
+    companion object {
+        @Container
+        @JvmStatic
+        val oracleContainer: OracleContainer =
+            OracleContainer(DockerImageName.parse("gvenzl/oracle-free:latest"))
+                .withStartupTimeout(Duration.ofMinutes(5))
+
+        @JvmStatic
+        @DynamicPropertySource
+        fun overrideProperties(registry: DynamicPropertyRegistry) {
+            registry.add("spring.datasource.url") { oracleContainer.jdbcUrl }
+            registry.add("spring.datasource.username") { oracleContainer.username }
+            registry.add("spring.datasource.password") { oracleContainer.password }
+            registry.add("spring.datasource.driver-class-name") { "oracle.jdbc.OracleDriver" }
+            registry.add("spring.jpa.database-platform") { "org.hibernate.dialect.OracleDialect" }
+            registry.add("spring.jpa.hibernate.ddl-auto") { "none" }
+            registry.add("spring.flyway.enabled") { "true" }
+            registry.add("spring.flyway.locations") { "classpath:db/migration" }
+            registry.add("spring.flyway.placeholders.schema") { "" }
+        }
+    }
+}

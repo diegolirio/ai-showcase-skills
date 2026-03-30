@@ -1,0 +1,8 @@
+.PHONY: test
+.PHONY: test-health
+
+test:
+	./gradlew test
+
+test-health:
+	./gradlew :{api-module}:test --tests "*HealthControllerIntegrationTest"
