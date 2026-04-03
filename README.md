@@ -4,7 +4,7 @@
 ## Observacao: 
 ### Copilot
 - Skills com Github-Copilot sao adicionados em `.github/skills` com uma pasta com o nome da skill. Ex `.github/skills/create-makefile/SKILL.md`. Para executar `/create-makefile`
-- Skills padroes podem ser copiadas para `~/.copilot/skills`, como no `put-or-update-skills-copilot.sh`
+- Skills padroes podem ser copiadas para `~/.copilot/skills`, como no `put-or-update-copilot-skills.sh`
 ### GPT Codex
 - Skills com GPT-Codex sao adicionados no root em `skills` com uma pasta com o nome da skill. Ex `skills/create-makefile/SKILL.md`. Para executar `$create-makefile`
 
