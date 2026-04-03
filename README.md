@@ -1,10 +1,16 @@
 # AI Showcase Skills
 
 
-Observacao: 
-> - Skills com Github-Copilot sao adicionados em `.github/skills` com uma pasta com o nome da skill. Ex `.github/skills/create-makefile/SKILL.md`. Para executar `/create-makefile`
-> - Skills com GPT-Codex sao adicionados no root em `skills` com uma pasta com o nome da skill. Ex `skills/create-makefile/SKILL.md`. Para executar `$create-makefile`
-> - Skills com Claude-Code ... `in_progress...`
+## Observacao: 
+### Copilot
+- Skills com Github-Copilot sao adicionados em `.github/skills` com uma pasta com o nome da skill. Ex `.github/skills/create-makefile/SKILL.md`. Para executar `/create-makefile`
+- Skills padroes podem ser copiadas para `~/.copilot/skills`, como no `put-or-update-skills-copilot.sh`
+### GPT Codex
+- Skills com GPT-Codex sao adicionados no root em `skills` com uma pasta com o nome da skill. Ex `skills/create-makefile/SKILL.md`. Para executar `$create-makefile`
+
+### Claude Code
+- Skills com Claude-Code ... `in_progress...`
+
 
 Projeto de referência para demonstrar como usar **GitHub Copilot Customization** (Instructions, Skills, Templates) em um monorepo Kotlin Spring Boot com CQRS + Clean Architecture.
 
