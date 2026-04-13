@@ -1,0 +1,54 @@
+{
+  "tool": "k6",
+  "test1": {
+    "target": {
+      "baseUrl": "http://localhost:8080",
+      "env": "local"
+    },
+    "authentication": {
+      "type": "none",
+      "headersMandatory": []
+    },
+    "goal": "medir throughput e latencia do endpoint {HTTP_METHOD} {PATH}",
+    "successCriteria": {
+      "thresholds": {
+        "http_req_failed": [
+          "rate<0.01"
+        ],
+        "http_req_duration": [
+          "p(95)<500"
+        ]
+      }
+    },
+    "request": {
+      "body": {}
+    },
+    "loadProfile": {
+      "totalVirtualUsersWarmup": 1,
+      "totalVirtualUsers": 20,
+      "warmup": "10s",
+      "rampUp": "30s",
+      "plateau": "1m",
+      "rampDown": "15s"
+    },
+    "responseValidation": {
+      "status": 200
+    },
+    "observability": {
+      "apiMonitor": [
+        "cpu",
+        "memory",
+        "connectionPool"
+      ],
+      "databaseMonitor": [
+        "locks",
+        "queryTime"
+      ]
+    },
+    "implementationPolicy": {
+      "totalDuration": "1m55s",
+      "repetitions": 1,
+      "stopCriteria": "manual"
+    }
+  }
+}
