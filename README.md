@@ -1,8 +1,10 @@
 # AI Showcase Skills
 
+## Criando uma startup o mais rapido possivel com QUALIDADE elevada  usando IA
 
 ## Observacao: 
-### Copilot
+Para executar as skills:
+
 - Skills com Github-Copilot sao adicionados em `.github/skills` com uma pasta com o nome da skill. Ex `.github/skills/create-makefile/SKILL.md`. Para executar `/create-makefile`
 - Skills padroes podem ser copiadas para `~/.copilot/skills`, como no `put-or-update-copilot-skills.sh`
 ### GPT Codex
@@ -11,33 +13,31 @@
 ### Claude Code
 - Skills com Claude-Code ... `in_progress...`
 
-
-Projeto de referência para demonstrar como usar **GitHub Copilot Customization** (Instructions, Skills, Templates) em um monorepo Kotlin Spring Boot com CQRS + Clean Architecture.
-
 ---
 
-## Skills Disponíveis
+## Skills Disponíveis `Principais para um comeco rapido`
 
-| Skill | Descrição breve |
+| Skill | Base | Descrição breve |
 |---|---|
-| `scaffold-kotlin-monorepo` | Cria um monorepo Kotlin Spring Boot (api + core) com estrutura CQRS/Clean Architecture, Gradle, Application e instruções base. |
-| `setup-test-integration` | Configura base reutilizável de testes de integração com Testcontainers Oracle, Flyway no core e targets de teste no Makefile. |
+| `scaffold-monorepo-multimodulos-kotlin-speckit` | YES | Cria um ecosistema multi monorepo Kotlin Spring Boot com framework SDD speckit.|
+| `scaffold-monorepo-multimodulos-kotlin` | YES | Cria um ecosistema multi monorepo Kotlin Spring Boot.|
 
 ---
 
-## Quick Start — Novo Projeto
+## Quick Start 
 
 ### 1. Copie os arquivos para o novo projeto
 
 ```sh
-# Copia instructions + skill para o novo projeto
-cp -r .github/ /caminho/do/novo-projeto/.github/
+sh put-or-update-global-skills.sh
 ```
 
-### 2. No VS Code, execute a skill
-
-Abra o **novo projeto** no VS Code e no chat do Copilot digite:
-
+### 2. No VSCode, Cursor, Claude-Cli, execute a skill
+Criando o monorepo backend kotlin
 ```
-/scaffold-kotlin-monorepo
+/scaffold-monorepo-multimodulos-kotlin-speckit
+```
+Adicionando frontend nextjs (web e mobile)
+```
+/scaffold-monorepo-multimodulos-add-nextjs
 ```
