@@ -2,17 +2,6 @@
 
 ## Criando uma startup o mais rapido possivel com QUALIDADE elevada  usando IA
 
-## Observacao: 
-Para executar as skills:
-
-- Skills com Github-Copilot sao adicionados em `.github/skills` com uma pasta com o nome da skill. Ex `.github/skills/create-makefile/SKILL.md`. Para executar `/create-makefile`
-- Skills padroes podem ser copiadas para `~/.copilot/skills`, como no `put-or-update-copilot-skills.sh`
-### GPT Codex
-- Skills com GPT-Codex sao adicionados no root em `skills` com uma pasta com o nome da skill. Ex `skills/create-makefile/SKILL.md`. Para executar `$create-makefile`
-
-### Claude Code
-- Skills com Claude-Code ... `in_progress...`
-
 ---
 
 ## Skills Disponíveis `Principais para um comeco rapido`
@@ -26,11 +15,17 @@ Para executar as skills:
 
 ## Quick Start 
 
-### 1. Copie os arquivos para o novo projeto
+### 1. Copie as skill executando o arquivo shell como abaixo
 
 ```sh
 sh put-or-update-global-skills.sh
 ```
+
+> Obs.: Para executar em cada LLM o comando pode mudar
+>  codex => `$scaffold-monorepo-multimodulos-kotlin-speckit`
+>  claude => `/scaffold-monorepo-multimodulos-kotlin-speckit`
+>  cursor => `/scaffold-monorepo-multimodulos-kotlin-speckit`
+>  copilot => `/scaffold-monorepo-multimodulos-kotlin-speckit`
 
 ### 2. No VSCode, Cursor, Claude-Cli, execute a skill
 Criando o monorepo backend kotlin
