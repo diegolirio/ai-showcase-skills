@@ -36,6 +36,8 @@ Exemplos:
 
 ## Regras de pipeline (obrigatorias)
 1. Detectar apps backend automaticamente (modulos com `*Application.kt`)
+    - derivar `app_dir` de forma simples e robusta com:
+       `app_dir="${app_file%/src/main/kotlin/*}"`
 2. Criar matrix com um item por app backend
 3. Rodar build/push em paralelo por app
 4. Para app `*-api` com `*-web` existente:
@@ -115,7 +117,7 @@ zipStorePath=wrapper/dists
 | **Gradle** | 9.4.1 | Via wrapper (gradlew) |
 | **Spring Boot** | 4.0.5 | LTS, Jakarta EE, Tomcat 11.0.20 |
 | **Kotlin** | 2.3.0 | Compativel com Spring Boot 4.0.5 |
-| **Java Toolchain** | 25 | Oracle GraalVM 25.0.2 |
+| **Java Toolchain** | 25 | JDK 25 |
 | **Next.js** | 16.0.0 | Com Turbopack, output: 'export' |
 | **Node/pnpm** | LTS / 10.9.0+ | Package manager |
 
@@ -158,7 +160,21 @@ build-front-back-{DOMAIN}-api:
 	cp -r {DOMAIN}/{DOMAIN}-web/out/. {DOMAIN}/{DOMAIN}-api/src/main/resources/static/ 2>/dev/null || true
 	cp -r {DOMAIN}/{DOMAIN}-web/public/. {DOMAIN}/{DOMAIN}-api/src/main/resources/static/ 2>/dev/null || true
 
-run-back-{DOMAIN}-api: build-front-back-{DOMAIN}-api
+build-back-{DOMAIN}-api:
+   ./gradlew :{DOMAIN}:{DOMAIN}-api:clean :{DOMAIN}:{DOMAIN}-api:build -x test
+
+build-back-{DOMAIN}-async:
+   ./gradlew :{DOMAIN}:{DOMAIN}-async:clean :{DOMAIN}:{DOMAIN}-async:build -x test
+
+test-backend:
+   ./gradlew test
+
+discover-apps-local:
+   find . -name "*Application.kt" -path "*/src/main/kotlin/*" -print
+
+ci-local: test-backend build-back-{DOMAIN}-api build-back-{DOMAIN}-async
+
+run-front-back: build-front-back-{DOMAIN}-api
    ./gradlew :{DOMAIN}:{DOMAIN}-api:bootRun
 ```
 
@@ -167,6 +183,7 @@ Jobs obrigatorios:
 1. `discover-apps`
    - checkout
    - descobrir apps backend
+   - derivar campos da matrix com `app_dir="${app_file%/src/main/kotlin/*}"`, `domain`, `appType` e `modulePath`
    - gerar output matrix JSON
 2. `build-and-push-app` (matrix)
    - checkout
@@ -201,7 +218,8 @@ Jobs obrigatorios:
 
 ## Comandos de validacao local
 ```bash
-make run-back-{DOMAIN}-api
+make ci-local
+make run-front-back
 ./gradlew :{DOMAIN}:{DOMAIN}-api:clean :{DOMAIN}:{DOMAIN}-api:build -x test
 
 docker build -t {DOCKER_USERNAME}/{PROJECT_NAME}-{DOMAIN}-api:latest \
@@ -209,7 +227,4 @@ docker build -t {DOCKER_USERNAME}/{PROJECT_NAME}-{DOMAIN}-api:latest \
 ```
 
 ## Limites desta skill
-- Nao inclui GraalVM/native image
 - Nao define estrategia final de deploy (k8s/ECS/etc.)
-
-Para native image, usar: `devops-pipeline-javagraalvm-nextjs`.

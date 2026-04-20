@@ -125,7 +125,7 @@ Regra de modulo aninhado (importante para comandos Gradle):
 | **Gradle** | 9.4.1 | Via wrapper (gradlew) |
 | **Spring Boot** | 4.0.5 | LTS, Jakarta EE, Tomcat 11.0.20 |
 | **Kotlin** | 2.3.0 | Compativel com Spring Boot 4.0.5 |
-| **Java Toolchain** | 25 | LTS (Oracle GraalVM 25.0.2) |
+| **Java Toolchain** | 25 | LTS (JDK 25) |
 
 ## Estrutura Speckit (`specs/`)
 
