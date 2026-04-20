@@ -49,6 +49,84 @@ include("{GROUP}:{GROUP}-api", "{GROUP}:{GROUP}-core", "shared-libs")
 Convenções tecnicas e versoes (Kotlin 2.3.x, Spring Boot 4.x, Java 25) seguem
 [reference.md](reference.md).
 
+## Dependencias Recomendadas (Validadas Spring Boot 4.0.5)
+
+Exemplo de `{GROUP}-api/build.gradle.kts` (API REST):
+
+```kotlin
+dependencies {
+    implementation(project(":{GROUP}:{GROUP}-core"))
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+kotlin {
+    jvmToolchain(25)
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+    }
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+```
+
+> `jackson-module-kotlin` é gerenciado automaticamente pelo Spring Boot BOM em 4.0.5.
+
+## Configuracao Gradle (obrigatoria e explicita)
+
+Arquivos obrigatorios no root do repositorio:
+
+```text
+{MONOREPO}/
+├── gradlew
+├── gradlew.bat
+├── gradle/
+│   ├── libs.versions.toml
+│   └── wrapper/
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── settings.gradle.kts
+├── build.gradle.kts
+└── gradle.properties
+```
+
+Regras obrigatorias do wrapper:
+- Sempre executar comandos com `./gradlew`.
+- `gradle/wrapper/gradle-wrapper.jar` deve ser commitado no repositorio.
+- Se o jar estiver ausente, regenerar wrapper a partir de um Gradle funcional e commitar os arquivos gerados.
+
+Exemplo valido de `gradle/wrapper/gradle-wrapper.properties`:
+```properties
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-9.4.1-bin.zip
+networkTimeout=10000
+validateDistributionUrl=true
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+```
+
+Regra de modulo aninhado (importante para comandos Gradle):
+- Correto: `./gradlew :{GROUP}:{GROUP}-api:bootRun`
+- Incorreto: `./gradlew {GROUP}-api:bootRun`
+
+## Versoes Recomendadas (Validadas)
+
+| Componente | Versao | Observacao |
+|---|---|---|
+| **Gradle** | 9.4.1 | Via wrapper (gradlew) |
+| **Spring Boot** | 4.0.5 | LTS, Jakarta EE, Tomcat 11.0.20 |
+| **Kotlin** | 2.3.0 | Compativel com Spring Boot 4.0.5 |
+| **Java Toolchain** | 25 | LTS (Oracle GraalVM 25.0.2) |
+
 ## Estrutura Speckit (`specs/`)
 
 Criar na raiz do monorepo:
