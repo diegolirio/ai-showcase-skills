@@ -39,13 +39,17 @@ Exemplos:
     - derivar `app_dir` de forma simples e robusta com:
        `app_dir="${app_file%/src/main/kotlin/*}"`
 2. Criar matrix com um item por app backend
-3. Rodar build/push em paralelo por app
+3. Rodar smoke build de imagem por app (sempre) e push apenas em `main` + `push`
 4. Para app `*-api` com `*-web` existente:
    - build frontend
    - copiar `out/.` + `public/.` para `*-api/src/main/resources/static`
 5. Para app `*-async`, `*-job`, etc:
    - build apenas backend
 6. Deploy separado por app (tambem em matrix)
+
+Regra para Dockerfile em monorepo Gradle:
+- Se o `settings.gradle.kts` inclui varios modulos, o stage builder do Dockerfile deve copiar todos os modulos incluidos (ex.: `shared-libs`, `*-core`, `*-api`, `*-async`).
+- Caso contrario, o build pode falhar na configuracao com erro de diretorio ausente de projeto incluido.
 
 ## Estrutura minima esperada
 ```text
@@ -104,6 +108,7 @@ Troubleshooting rapido (CI):
 - Erro `Could not find or load main class org.gradle.wrapper.GradleWrapperMain` indica wrapper incompleto no checkout.
 - Validar no repo: `gradle/wrapper/gradle-wrapper.jar` existe e esta versionado.
 - Se ausente, regenerar com `gradle wrapper --gradle-version 9.4.1 --distribution-type bin` e commitar `gradlew`, `gradlew.bat`, `gradle/wrapper/gradle-wrapper.jar` e `gradle/wrapper/gradle-wrapper.properties`.
+- Erro `Configuring project ':<modulo>' without an existing directory is not allowed` durante `RUN ./gradlew ...` no Docker indica que faltam `COPY` de modulos incluidos no `settings.gradle.kts`.
 
 Exemplo de `gradle/wrapper/gradle-wrapper.properties`:
 ```properties
@@ -196,7 +201,8 @@ Jobs obrigatorios:
    - se appType = api e web existe: build web + copy dist
    - setup java
    - gradle build do modulo
-   - docker build/push da imagem do app
+   - docker smoke build da imagem (`push: false`) para todos os apps
+   - push da imagem (`push: true`) apenas em `main` + `push`
 3. `test-backend`
    - checkout
    - setup java
@@ -216,7 +222,8 @@ Jobs obrigatorios:
 
 ## Checklist pos-aplicacao
 - [ ] Pipeline com `discover-apps` + matrix
-- [ ] Build/push em paralelo por app
+- [ ] Smoke build de imagem em paralelo por app
+- [ ] Push de imagem apenas em `main` + `push`
 - [ ] `*-api` faz copy de `out/.` para `resources/static`
 - [ ] Apps nao-api fazem build sem frontend
 - [ ] Naming da imagem segue `{PROJECT_NAME}-{DOMAIN}-{APP_TYPE}`

@@ -109,6 +109,10 @@ Troubleshooting rapido (CI):
 - Validar no repo: `gradle/wrapper/gradle-wrapper.jar` existe e esta versionado.
 - Se ausente, regenerar com `gradle wrapper --gradle-version 9.4.1 --distribution-type bin` e commitar `gradlew`, `gradlew.bat`, `gradle/wrapper/gradle-wrapper.jar` e `gradle/wrapper/gradle-wrapper.properties`.
 
+Troubleshooting rapido (Docker + Gradle multi-modulo):
+- Erro `Configuring project ':<modulo>' without an existing directory is not allowed` durante `RUN ./gradlew ...` no Docker indica contexto incompleto.
+- Em Dockerfile de builder, copiar todos os modulos incluidos no `settings.gradle.kts` (ex.: `shared-libs`, `*-core`, `*-api`, `*-async`) antes de executar Gradle.
+
 Exemplo valido de `gradle/wrapper/gradle-wrapper.properties`:
 ```properties
 distributionBase=GRADLE_USER_HOME
