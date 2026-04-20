@@ -96,8 +96,14 @@ Arquivos obrigatorios no root:
 Regras obrigatorias:
 - Pipeline e Makefile devem usar `./gradlew`.
 - `gradle/wrapper/gradle-wrapper.jar` deve estar versionado no Git.
+- Se existir regra global `*.jar` no `.gitignore`, adicionar excecao explicita: `!gradle/wrapper/gradle-wrapper.jar`.
 - `gradle/wrapper/gradle-wrapper.properties` deve definir `distributionUrl` fixo.
 - Em modulos aninhados, task path sempre no formato `:{DOMAIN}:{DOMAIN}-api`.
+
+Troubleshooting rapido (CI):
+- Erro `Could not find or load main class org.gradle.wrapper.GradleWrapperMain` indica wrapper incompleto no checkout.
+- Validar no repo: `gradle/wrapper/gradle-wrapper.jar` existe e esta versionado.
+- Se ausente, regenerar com `gradle wrapper --gradle-version 9.4.1 --distribution-type bin` e commitar `gradlew`, `gradlew.bat`, `gradle/wrapper/gradle-wrapper.jar` e `gradle/wrapper/gradle-wrapper.properties`.
 
 Exemplo de `gradle/wrapper/gradle-wrapper.properties`:
 ```properties
