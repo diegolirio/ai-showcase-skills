@@ -39,3 +39,30 @@ Adicionando frontend nextjs (web e mobile)
 ```
 /scaffold-monorepo-multimodulos-add-nextjs
 ```
+
+## Usando o npx
+
+Instala as dependencias Node.js do projeto CLI.
+```sh
+npm install
+```
+
+Compila o TypeScript e gera os arquivos executaveis em `dist/`.
+```sh
+npm run build
+```
+
+Instala a CLI globalmente na sua maquina para usar o comando em qualquer pasta.
+```sh
+npm install -g .
+```
+
+Cria um novo projeto `my-saas` no padrao da skill `scaffold-monorepo-multimodulos-kotlin-speckit`.
+```sh
+creator-saas-ecosystem my-saas --kotlin --project-name sales-api --group br.com.lirio
+```
+
+Dentro da pasta criada, gera os arquivos completos do Gradle Wrapper (`gradlew`, `gradlew.bat` e jar do wrapper).
+```sh
+gradle wrapper --gradle-version 9.4.1 --distribution-type bin
+```

@@ -1,0 +1,23 @@
+{
+  "name": "creator-saas-ecosystem",
+  "version": "0.1.0",
+  "description": "CLI para inicializar ecossistema SaaS a partir de skills",
+  "type": "module",
+  "bin": {
+    "creator-saas-ecosystem": "dist/cli/create-saas-ecosystem/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx cli/create-saas-ecosystem/index.ts",
+    "start": "node dist/cli/create-saas-ecosystem/index.js"
+  },
+  "files": [
+    "dist",
+    "skills"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.15.17",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  }
+}
