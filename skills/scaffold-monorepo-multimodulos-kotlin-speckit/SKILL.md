@@ -26,6 +26,10 @@ mesma estrutura Gradle/Kotlin/Spring Boot **mais** a estrutura de
 | `{GROUP_CORE}` | Biblioteca Kotlin | `{GROUP}-core` -> `running-core` |
 | `{BASE_PKG}` | Pacote base | `com.{empresa}.{GROUP}` (ou `group` Gradle existente, ex.: `com.healthy`) |
 | `{BASE_PKG_ROOT}` | Pacote base da raiz, para `shared-libs` | `com.{empresa}` |
+
+> **REGRA OBRIGATORIA — nomenclatura de pacotes:** todo segmento de pacote Kotlin/Java deve conter apenas letras minusculas e digitos. **Proibido usar `-` (hifen), `_` (underline) ou camelCase** em segmentos de pacote. Nomes compostos devem ser separados por `.` (ponto).
+> - CORRETO: `com.empresa.diego.lirio`, `com.empresa.minha.feature`
+> - ERRADO: `com.empresa.diego-lirio`, `com.empresa.diego_lirio`, `com.empresa.diegoLirio`
 | `{NNN}` | Numero da feature, 3 digitos | `001` |
 | `{SLUG}` | Slug kebab-case da feature | `consultar-alimentos` |
 
@@ -198,7 +202,7 @@ Arquivo `specs/constitution.md` com secoes:
 
 1. **Arquitetura** — `*-api` / `*-core`, regras de dependencia, `shared-libs/`.
 2. **Linguagem e plataforma** — Kotlin, JVM target, Spring Boot, Jakarta EE.
-3. **Convencoes de codigo** — pacotes, DTOs, excecoes de dominio.
+3. **Convencoes de codigo** — pacotes, DTOs, excecoes de dominio. **Regra obrigatoria:** pacotes Kotlin/Java **nao podem ter `-` (hifen) nem `_` (underline)**; nomes compostos usam `.` (ponto). Ex.: `com.empresa.diego.lirio` (correto), `com.empresa.diego-lirio` / `com.empresa.diego_lirio` (errado).
 4. **Runtime** — `spring.application.name`, portas locais, env vars.
 5. **Persistencia** — schema per service, migrations, nenhum acesso cruzado.
 6. **Testes** — JUnit Platform, slice tests, criterios de aceitacao com teste.

@@ -128,6 +128,10 @@ Regra de task para modulo aninhado:
 - **`*-core`:** so `org.jetbrains.kotlin.jvm`.
 - **`shared-libs`:** so `org.jetbrains.kotlin.jvm`, sem Spring Boot.
 - **Pacotes:** `{BASE_PKG}.api` na app (`*Application`, controllers), `{BASE_PKG}.core` na library; `application.yml` com `spring.application.name: {GROUP}-api`.
+- **Regra obrigatoria de nomenclatura de pacotes:** pacotes Kotlin/Java **nao podem conter `-` (hifen) nem `_` (underline)**. Nomes compostos devem ser separados por `.` (ponto). Exemplos:
+  - CORRETO: `com.empresa.diego.lirio`, `com.empresa.minha.feature`
+  - ERRADO: `com.empresa.diego-lirio`, `com.empresa.diego_lirio`, `com.empresa.diegoLirio`
+  - Isso se aplica a todos os segmentos do pacote, incluindo `{BASE_PKG}`, `{BASE_PKG_ROOT}` e subpacotes de feature.
 - **Java / Kotlin:** alinhar **Java toolchain**, **Kotlin `jvmToolchain`**, e **`KotlinCompile` `jvmTarget`** ao mesmo nivel (ex.: 25). **Kotlin que gera bytecode JVM 25** requer versao compativel do compilador (ver [reference.md](reference.md)).
 - **Portas:** varias APIs locais -> portas distintas por `server.port` em cada `application.yml`.
 
