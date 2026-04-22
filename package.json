@@ -7,7 +7,7 @@
     "creator-saas-ecosystem": "dist/cli/create-saas-ecosystem/index.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && chmod +x dist/cli/create-saas-ecosystem/index.js",
     "dev": "tsx cli/create-saas-ecosystem/index.ts",
     "start": "node dist/cli/create-saas-ecosystem/index.js"
   },
