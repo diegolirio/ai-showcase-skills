@@ -14,6 +14,10 @@ description: >-
 ## What This Skill Does
 
 Create or extend a frontend monorepo that is independent from the backend stack.
+The selected project root is the domain folder itself, not the repository root.
+For example, in a repo shaped like `analizza/`, the frontend for `properties`
+lives in `analizza/properties/`, while `shared-front/` stays at the repository root.
+
 It standardizes a structure like:
 
 ```text
@@ -25,23 +29,25 @@ It standardizes a structure like:
 └── shared-front/
 ```
 
-Use this skill for projects such as `properties-web` and `properties-mobile`, but
-always keep the names generic and template-based:
+Use this skill for projects such as `properties` or `cars`, but always keep the
+names generic and template-based:
 
 - `{{project-name}}-web`
 - `{{project-name}}-mobile`
 - `{{project-name}}-ui`
-- `shared-front` at the root for cross-project frontend sharing
+- `shared-front` at the repository root for cross-project frontend sharing
 
 ## Core Rules
 
 - Frontend structure is independent from backend technology.
 - Never create backend modules or backend-specific folders.
-- If multiple frontend projects exist in the monorepo, first detect them and ask
-  whether the scaffold should be applied to all projects or only the selected ones.
 - Treat each project as independent. `properties` and `cars` are separate projects.
-- `shared-front` is root-level and can be consumed by more than one frontend project.
-- `{{project-name}}-ui` is project-scoped UI shared between that project's web and mobile apps.
+- If the repository already contains multiple domain folders, place the frontend
+  packages inside the selected domain folder, not alongside it.
+- `shared-front` is always root-level and can be consumed by more than one
+  frontend project.
+- `{{project-name}}-ui` is project-scoped UI shared between that project's web
+  and mobile apps.
 
 ## Discovery
 
@@ -70,7 +76,7 @@ For each selected project, create or extend:
 └── {project-name}-ui/
 ```
 
-At the root of the frontend workspace, keep:
+At the repository root, keep:
 
 ```text
 shared-front/
@@ -79,9 +85,10 @@ shared-front/
 ## Package Manager and Workspace Rules
 
 - Prefer `pnpm` workspaces.
-- Keep a `package.json` at the frontend workspace root for the selected project.
+- Keep a `package.json` at the selected project root, for example
+  `properties/package.json` or `wc26/package.json`.
 - Use local workspace/package references for `{{project-name}}-ui`.
-- Use local file or workspace references for root `shared-front`.
+- Use local file references for root `shared-front`.
 - Do not bind the frontend to a backend build tool.
 
 ## Setup Guidance
@@ -89,6 +96,7 @@ shared-front/
 For a new project, scaffold the minimum viable files:
 
 - `{{project-name}}/package.json`
+- `{{project-name}}/pnpm-workspace.yaml`
 - `{{project-name}}-web/package.json`, `next.config.mjs`, `tsconfig.json`, `app/layout.tsx`, `app/page.tsx`
 - `{{project-name}}-mobile/package.json`, `app.json`, `babel.config.js`, `tsconfig.json`, `app/_layout.tsx`, `app/index.tsx`
 - `{{project-name}}-ui/package.json`, `src/index.ts`, plus any shared UI primitives
@@ -102,16 +110,16 @@ logic when the user did not provide domain details.
 - Use the project slug exactly as provided for folder and package names.
 - Derive web and mobile app names by appending `-web` and `-mobile`.
 - Derive the shared domain UI package by appending `-ui`.
-- Keep `shared-front` as a root-level generic shared package for frontend code used
-  by multiple projects.
+- Keep `shared-front` as a root-level generic shared package for frontend code
+  used by multiple projects.
 
 ## Validation Mindset
 
 After scaffolding, verify that:
 
 - the package manager can install dependencies inside the selected project root
-- the web app can start independently
-- the mobile app can start independently
+- the web app can start independently from inside the project root
+- the mobile app can start independently from inside the project root
 - shared UI imports resolve through local workspace or file references
 - root `shared-front` does not depend on any single project
 

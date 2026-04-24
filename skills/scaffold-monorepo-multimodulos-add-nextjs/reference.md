@@ -7,6 +7,10 @@ stack. The backend may be Java, Kotlin, Python, Go, or anything else.
 
 ## Default Shape
 
+The selected project root is the domain folder itself. In a repo like
+`analizza/`, the `properties` frontend lives in `analizza/properties/`, while
+`shared-front/` stays at the repository root.
+
 ```text
 {ROOT}/
 ├── {project-name}/
@@ -21,18 +25,25 @@ Examples:
 ```text
 analizza/
 ├── properties/
+│   ├── properties-api/
+│   ├── properties-core/
+│   ├── properties-async/
 │   ├── properties-web/
 │   ├── properties-mobile/
 │   └── properties-ui/
+├── shared-libs/
 └── shared-front/
 ```
 
 ```text
-company-x/
-├── auctions/
-│   ├── auctions-web/
-│   ├── auctions-mobile/
-│   └── auctions-ui/
+wc26/
+├── wc26/
+│   ├── wc26-api/
+│   ├── wc26-core/
+│   ├── wc26-web/
+│   ├── wc26-mobile/
+│   └── wc26-ui/
+├── shared-libs/
 └── shared-front/
 ```
 
@@ -46,10 +57,12 @@ company-x/
 
 ## Workspace Rules
 
-- Keep a `package.json` at the selected frontend workspace root.
-- Use `pnpm` workspaces when the project has more than one frontend package.
+- Keep a `package.json` at the selected project root.
+- Use `pnpm` workspaces inside the selected project root when the project has more
+  than one frontend package.
 - Keep `shared-front` root-level so it can be shared across multiple projects.
 - Keep `{{project-name}}-ui` inside the project so it only serves that domain.
+- Reference root `shared-front` from project packages with a local `file:` path.
 
 ## Detection Heuristics
 
@@ -70,6 +83,7 @@ If more than one project root is found, stop and ask which projects should be sc
 For a fresh project, scaffold the minimum:
 
 - `{{project-name}}/package.json`
+- `{{project-name}}/pnpm-workspace.yaml`
 - `{{project-name}}-web/package.json`
 - `{{project-name}}-web/next.config.mjs`
 - `{{project-name}}-web/tsconfig.json`
