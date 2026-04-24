@@ -13,6 +13,7 @@
 | `scaffold-monorepo-multimodulos-kotlin-speckit` | YES | Cria um ecosistema multi monorepo Kotlin Spring Boot com framework SDD speckit.|
 | `scaffold-monorepo-multimodulos-kotlin` | YES | Cria um ecosistema multi monorepo Kotlin Spring Boot.|
 | `scaffold-monorepo-multimodulos-add-nextjs` | NO | Adiciona o frontend (web/mobile) nos projetos dentro multi monorepo, independente na liguagem backend.|
+| `devops-pipeline-hybrid-java-nextjs` | NO | Add pipeline buildando frontend e backend imbutido.|
 
 ---
 
@@ -32,10 +33,14 @@ sh put-or-update-global-skills.sh
 
 ### 2. No VSCode, Cursor, Claude-Cli, execute a skill
 Criando o monorepo backend kotlin
-```
-/scaffold-monorepo-multimodulos-kotlin-speckit
+```sh
+/scaffold-monorepo-multimodulos-kotlin-speckit my-project
 ```
 Adicionando frontend nextjs (web e mobile)
-```
+```sh
 /scaffold-monorepo-multimodulos-add-nextjs
+```
+Adicionando pipeline com frontend e backend build-in (Considere os secrets na sua pipeline DOCKER_USERNAME e DOCKER_PASSWORD)
+```sh
+/devops-pipeline-hybrid-java-nextjs
 ```
