@@ -172,22 +172,62 @@ build-front-back-{DOMAIN}-api:
 	cp -r {DOMAIN}/{DOMAIN}-web/public/. {DOMAIN}/{DOMAIN}-api/src/main/resources/static/ 2>/dev/null || true
 
 build-back-{DOMAIN}-api:
-   ./gradlew :{DOMAIN}:{DOMAIN}-api:clean :{DOMAIN}:{DOMAIN}-api:build -x test
+	./gradlew :{DOMAIN}:{DOMAIN}-api:clean :{DOMAIN}:{DOMAIN}-api:build -x test
 
 build-back-{DOMAIN}-async:
-   ./gradlew :{DOMAIN}:{DOMAIN}-async:clean :{DOMAIN}:{DOMAIN}-async:build -x test
+	./gradlew :{DOMAIN}:{DOMAIN}-async:clean :{DOMAIN}:{DOMAIN}-async:build -x test
 
 test-backend:
-   ./gradlew test
+	./gradlew test
 
 discover-apps-local:
-   find . -name "*Application.kt" -path "*/src/main/kotlin/*" -print
+	find . -name "*Application.kt" -path "*/src/main/kotlin/*" -print
 
 ci-local: test-backend build-back-{DOMAIN}-api build-back-{DOMAIN}-async
 
+build-front:
+	cd {DOMAIN} && pnpm install
+
+run-front:
+	cd {DOMAIN} && pnpm install && pnpm run web
+
+clean-front:
+	rm -rf {DOMAIN}/{DOMAIN}-web/.next {DOMAIN}/{DOMAIN}-web/out
+
 run-front-back: build-front-back-{DOMAIN}-api
-   ./gradlew :{DOMAIN}:{DOMAIN}-api:bootRun
+	./gradlew :{DOMAIN}:{DOMAIN}-api:bootRun
 ```
+
+## .gitignore padrao (Next.js + Spring Boot)
+Entradas obrigatorias:
+```gitignore
+.gradle/
+build/
+**/build/
+.idea/
+.DS_Store
+*.iml
+*.class
+*.log
+*.tmp
+*.swp
+*.jar
+node_modules/
+.next/
+**/**/out/
+dist/
+coverage/
+.expo/
+.turbo/
+.pnpm-store/
+**/src/main/resources/static/
+!gradle/wrapper/gradle-wrapper.jar
+```
+
+Regras:
+- `**/**/out/` — escopo preciso: ignora apenas o `out/` de modulos `*-web`, nao afeta outros diretorios `out/` no repo.
+- `**/src/main/resources/static/` — arquivos copiados do build Next.js nao devem ser versionados.
+- `!gradle/wrapper/gradle-wrapper.jar` — excecao obrigatoria para o wrapper Gradle funcionar no CI.
 
 ## Workflow padrao (modelo)
 Jobs obrigatorios:
