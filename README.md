@@ -10,10 +10,10 @@
 
 | Skill | Base | Descrição breve |
 |---|---|---|
-| `sec-scaffold-monorepo-multimodulos-kotlin-speckit` | YES | Cria um ecosistema multi monorepo Kotlin Spring Boot com framework SDD speckit.|
-| `sec-scaffold-monorepo-multimodulos-kotlin` | YES | Cria um ecosistema multi monorepo Kotlin Spring Boot.|
-| `sec-scaffold-monorepo-multimodulos-add-nextjs` | NO | Adiciona o frontend (web/mobile) nos projetos dentro multi monorepo, independente na liguagem backend.|
-| `sec-devops-pipeline-hybrid-java-nextjs` | NO | Add pipeline buildando frontend e backend imbutido.|
+| `sec-multi-monorepo-kotlin-scaffold-speckit` | YES | Cria um ecosistema multi monorepo Kotlin Spring Boot com framework SDD speckit.|
+| `sec-multi-monorepo-kotlin-scaffold` | YES | Cria um ecosistema multi monorepo Kotlin Spring Boot.|
+| `sec-multi-monorepo-add-nextjs` | NO | Adiciona o frontend (web/mobile) nos projetos dentro multi monorepo, independente na liguagem backend.|
+| `sec-multi-monorepo-kotlin-nextjs-hybrid-pipeline` | NO | Add pipeline buildando frontend e backend imbutido.|
 
 ---
 
@@ -26,21 +26,21 @@ sh put-or-update-global-skills.sh
 ```
 
 > Obs.: Para executar em cada LLM o comando pode mudar   
->  codex => `$sec-scaffold-monorepo-multimodulos-kotlin-speckit`   
->  claude => `/sec-scaffold-monorepo-multimodulos-kotlin-speckit`   
->  cursor => `/sec-scaffold-monorepo-multimodulos-kotlin-speckit`   
->  copilot => `/sec-scaffold-monorepo-multimodulos-kotlin-speckit`   
+>  codex => `$sec-multi-monorepo-kotlin-scaffold-speckit`   
+>  claude => `/sec-multi-monorepo-kotlin-scaffold-speckit`   
+>  cursor => `/sec-multi-monorepo-kotlin-scaffold-speckit`   
+>  copilot => `/sec-multi-monorepo-kotlin-scaffold-speckit`   
 
 ### 2. No VSCode, Cursor, Claude-Cli, execute a skill
 Criando o monorepo backend kotlin
 ```sh
-/sec-scaffold-monorepo-multimodulos-kotlin-speckit my-project
+/sec-multi-monorepo-kotlin-scaffold-speckit my-project
 ```
 Adicionando frontend nextjs (web e mobile)
 ```sh
-/sec-scaffold-monorepo-multimodulos-add-nextjs
+/sec-multi-monorepo-add-nextjs
 ```
 Adicionando pipeline com frontend e backend build-in (Considere os secrets na sua pipeline DOCKER_USERNAME e DOCKER_PASSWORD)
 ```sh
-/sec-devops-pipeline-hybrid-java-nextjs
+/sec-multi-monorepo-kotlin-nextjs-hybrid-pipeline
 ```

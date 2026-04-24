@@ -1,5 +1,5 @@
 ---
-name: sec-devops-pipeline-hybrid-java-nextjs
+name: sec-multi-monorepo-kotlin-nextjs-hybrid-pipeline
 description: >
   Configura pipeline CI/CD com GitHub Actions para monorepo Kotlin Spring Boot + Next.js,
   com deploy por app backend em paralelo, Dockerfile por modulo @SpringBootApplication,

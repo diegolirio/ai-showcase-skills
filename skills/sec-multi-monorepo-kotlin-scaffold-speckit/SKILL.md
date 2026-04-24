@@ -1,5 +1,5 @@
 ---
-name: sec-scaffold-monorepo-multimodulos-kotlin-speckit
+name: sec-multi-monorepo-kotlin-scaffold-speckit
 description: >-
   Scaffolds or extends a Gradle Kotlin DSL monorepo with Kotlin, Java toolchain,
   Spring Boot apps ({group}-api) and Kotlin libraries ({group}-core), plus an
