@@ -1,5 +1,5 @@
 ---
-name: scaffold-monorepo-multimodulos-add-nextjs
+name: sec-scaffold-monorepo-multimodulos-add-nextjs
 description: >-
   Scaffolds or extends a frontend monorepo with Next.js web apps, Expo mobile apps,
   shared domain UI packages, and a root-level shared-front package. Use when the

@@ -1,5 +1,5 @@
 ---
-name: scaffold-monorepo-multimodulos-kotlin-speckit
+name: sec-scaffold-monorepo-multimodulos-kotlin-speckit
 description: >-
   Scaffolds or extends a Gradle Kotlin DSL monorepo with Kotlin, Java toolchain,
   Spring Boot apps ({group}-api) and Kotlin libraries ({group}-core), plus an
@@ -12,7 +12,7 @@ description: >-
 
 # Scaffold monorepo multimodulos (Kotlin) + Speckit
 
-Extensao da skill [`scaffold-monorepo-multimodulos-kotlin`](../scaffold-monorepo-multimodulos-kotlin/SKILL.md):
+Extensao da skill [`sec-scaffold-monorepo-multimodulos-kotlin`](../sec-scaffold-monorepo-multimodulos-kotlin/SKILL.md):
 mesma estrutura Gradle/Kotlin/Spring Boot **mais** a estrutura de
 **Spec-Driven Development** em `specs/`.
 
@@ -212,7 +212,7 @@ Arquivo `specs/constitution.md` com secoes:
 
 ## Fluxo do agente
 
-1. Rodar/estender a skill base `scaffold-monorepo-multimodulos-kotlin`
+1. Rodar/estender a skill base `sec-scaffold-monorepo-multimodulos-kotlin`
    (Gradle, Kotlin, Spring Boot, `*-api`/`*-core`, `shared-libs/` na raiz).
 2. Se `specs/` **nao existir**:
    - Criar `specs/README.md`, `specs/constitution.md`, `specs/_templates/*`.

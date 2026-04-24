@@ -1,12 +1,12 @@
 ---
-name: devops-pipeline-hybrid-java-nextjs
+name: sec-devops-pipeline-hybrid-java-nextjs
 description: >
   Configura pipeline CI/CD com GitHub Actions para monorepo Kotlin Spring Boot + Next.js,
   com deploy por app backend em paralelo, Dockerfile por modulo @SpringBootApplication,
   naming de imagem padronizado e build frontend dist (Next export -> out/) apenas para modulo *-api.
 ---
 
-# Skill: devops-pipeline-hybrid-java-nextjs
+# Skill: sec-devops-pipeline-hybrid-java-nextjs
 
 ## Objetivo
 Padronizar CI/CD para monorepo multi-modulo com:
