@@ -17,7 +17,7 @@
 
 ---
 
-## Quick Start 
+## SEC - SaaS Ecosystem Creator
 
 ### 1. Copie as skill executando o arquivo shell como abaixo
 
