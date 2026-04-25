@@ -1,5 +1,5 @@
 ---
-name: sec-multi-monorepo-kotlin-scaffold-speckit
+name: sec-scaffold-monorepo-multimodulos-kotlin-speckit
 description: >-
   Scaffolds or extends a Gradle Kotlin DSL monorepo with Kotlin, Java toolchain,
   Spring Boot apps ({group}-api) and Kotlin libraries ({group}-core), plus an
@@ -224,17 +224,6 @@ Arquivo `specs/constitution.md` com secoes:
 4. **Nao** criar `spec.md`/`plan.md`/`tasks.md` automaticamente: features sao
    escritas a partir de um pedido de usuario, usando `_templates/`.
 5. Ao adicionar um modulo Gradle novo, **sempre** criar a pasta `specs/` correspondente.
-6. Criar `specs/skills/` e copiar as skills de scaffolding para dentro do projeto:
-   ```bash
-   mkdir -p specs/skills
-   cp -r ~/.claude/skills/sec-multi-monorepo-kotlin-scaffold-speckit ./specs/skills/
-   cp -r ~/.claude/skills/sec-multi-monorepo-kotlin-scaffold ./specs/skills/
-   ```
-   Isso versiona no repositorio as skills usadas para scaffoldar, tornando-as
-   auditaveis e portaveis para outros desenvolvedores do time.
-   - Se a pasta ja existir em `specs/skills/`, nao sobrescrever.
-   - O caminho `~/.claude/` representa o diretorio de configuracao do agente de IA em uso
-     (ex.: `.claude` para Claude Code). Ajustar se o agente usar outro diretorio.
 
 Regra estrutural fixa: `shared-libs` e um modulo Gradle de primeira classe na raiz do monorepo. Nunca cria-lo dentro de `properties/` ou qualquer outro dominio interno.
 
