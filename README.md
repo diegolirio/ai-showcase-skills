@@ -14,6 +14,8 @@
 | `sec-multi-monorepo-kotlin-scaffold` | YES | Cria um ecosistema multi monorepo Kotlin Spring Boot.|
 | `sec-multi-monorepo-add-nextjs` | NO | Adiciona o frontend (web/mobile) nos projetos dentro multi monorepo, independente na liguagem backend.|
 | `sec-multi-monorepo-kotlin-nextjs-hybrid-pipeline` | NO | Add pipeline buildando frontend e backend imbutido.|
+| `kotlin-spring` + `criar-endpoint-rest` | NO | Conven\u00e7\u00f5es e scaffolding completo (DDD layered) para projetos Kotlin + Spring multi-m\u00f3dulo, com `XRepository` (interface no dom\u00ednio) + `RepositoryImpl`. Instalado via `setup-kotlin-spring`.|
+| `simple-kotlin-spring` + `simple-criar-endpoint-rest` | NO | Variante enxuta da skill acima: **sem `XRepository` (interface) e sem `RepositoryImpl`**; o Handler injeta `XJpaRepository` direto. Economiza ~2 arquivos por aggregate e ~30% de tokens por endpoint. Instalado via `simple-setup-kotlin-spring`.|
 
 ---
 
