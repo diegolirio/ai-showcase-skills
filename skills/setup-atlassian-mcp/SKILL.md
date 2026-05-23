@@ -1,83 +1,90 @@
 ---
 name: setup-atlassian-mcp
 description: >
-  Configures the Atlassian MCP server (Rovo) using Personal API Token (Basic auth) in the project's .mcp.json.
-  Use this skill when the user says "setup atlassian mcp", "add atlassian mcp", "configurar atlassian mcp",
-  "criar setup-atlassian-mcp", "adicionar atlassian ao mcp", or wants Copilot CLI to interact with Jira/Confluence via Atlassian Rovo.
-  This skill asks for the user's email and API token, generates the base64 credential, and writes .mcp.json
-  in the current working directory.
-argument-hint: "No arguments required — the skill will prompt for email and API token."
+  Configures the Atlassian MCP server (Rovo) using Personal API Token (Basic auth).
+  Use when the user says "setup atlassian mcp", "add atlassian mcp", "configurar atlassian mcp",
+  "adicionar atlassian ao mcp", or wants Claude Code to interact with Jira/Confluence via Atlassian Rovo.
+argument-hint: "No arguments required — the skill will prompt for scope, storage mode, email, and API token."
 ---
 
 # Skill: setup-atlassian-mcp
 
-Configures the Atlassian MCP integration (Rovo) using **Personal API Token (Basic auth)** by creating or
-updating `.mcp.json` in the **current working directory** with the `atlassian-rovo-mcp` server entry.
-
-After setup, Copilot CLI can interact with Jira, Confluence, and other Atlassian products natively via
-the Atlassian Remote MCP server at `https://mcp.atlassian.com/v1/mcp`.
+Configures the Atlassian MCP integration (Rovo) via the Remote MCP server at `https://mcp.atlassian.com/v1/mcp`.
 
 ---
 
-## What This Skill Does
+## Instructions
 
-1. Prompts the user for credentials in **two separate questions**: first the email, then the API token (with a friendly link to create one with max settings pre-filled).
-2. Generates the `base64(email:api_token)` credential string.
-3. Checks if `.mcp.json` already exists in the current directory.
-4. If it does **not** exist: creates `.mcp.json` with the `atlassian-rovo-mcp` entry.
-5. If it **does** exist: uses a Python script to safely merge **only** the `atlassian-rovo-mcp` entry into the existing `mcpServers` object — all other servers are preserved.
-6. Validates the final JSON.
-7. Instructs the user to restart Copilot CLI.
+### Step 1 — Perguntar escopo
 
----
+Pergunte ao usuário onde o MCP deve ser registrado:
 
-## Prerequisites
+- **Global** → `~/.claude/mcp.json` (disponível em todos os projetos)
+- **Local** → `./.mcp.json` (apenas no projeto atual)
 
-- An Atlassian account with access to Jira or Confluence.
-- A **Personal API Token** created at: https://id.atlassian.com/manage-profile/security/api-tokens
-- The email address associated with that Atlassian account.
+Armazene a escolha como `SCOPE` (`global` ou `local`) e defina `MCP_FILE` como:
+- `global` → `~/.claude/mcp.json`
+- `local` → `./.mcp.json`
 
----
+### Step 2 — Perguntar modo de armazenamento do token
 
-## Procedure
+Pergunte ao usuário como deseja armazenar as credenciais:
 
-### Step 1 — Collect credentials from the user
+- **Env var** *(recomendado)* → exporta `ATLASSIAN_MCP_CREDENTIALS` no `~/.zshrc` e `~/.bashrc`; o `.mcp.json` referencia `${ATLASSIAN_MCP_CREDENTIALS}`. Mais seguro: token não fica hardcoded no arquivo.
+- **Direto no arquivo** → escreve o valor base64 diretamente no `.mcp.json`. Mais simples, mas requer `.gitignore` se for local.
 
-Use the `ask_user` tool **twice**, one question at a time:
+Armazene a escolha como `STORAGE` (`envvar` ou `direct`).
+
+### Step 3 — Coletar credenciais
 
 **Pergunta 1 — E-mail:**
-Pergunte o endereço de e-mail da conta Atlassian do usuário (ex.: `seuemail@empresa.com`). Armazene a resposta como `ATLASSIAN_EMAIL`.
+Pergunte o e-mail da conta Atlassian. Armazene como `ATLASSIAN_EMAIL`.
 
 **Pergunta 2 — API Token:**
-Pergunte pelo Personal API Token. Na pergunta, inclua uma mensagem amigável com o link direto para criar um token com as configurações máximas já pré-preenchidas:
+Pergunte o Personal API Token. Inclua o link para criar um com configurações máximas:
 
-> 🔑 Agora cole seu Atlassian Personal API Token.
-> Ainda não tem um? Crie aqui (validade máxima + todos os escopos já pré-configurados):
+> Ainda não tem um? Crie aqui (validade máxima + todos os escopos):
 > https://id.atlassian.com/manage-profile/security/api-tokens?autofillToken&expiryDays=max&appId=mcp&selectedScopes=all
 
-Armazene a resposta como `ATLASSIAN_API_TOKEN`.
+Armazene como `ATLASSIAN_API_TOKEN`.
 
-### Step 2 — Generate the base64 credential
+**IMPORTANTE:** Nunca exibir o token ou o base64 na resposta final.
 
-Run the following command replacing the placeholders with the values collected in Step 1:
-
-```bash
-echo -n "ATLASSIAN_EMAIL:ATLASSIAN_API_TOKEN" | base64
-```
-
-Store the output as `BASE64_CREDENTIAL`. This is the value that goes into the `Authorization` header.
-
-### Step 3 — Check if .mcp.json exists in the current directory
+### Step 4 — Gerar o base64
 
 ```bash
-ls .mcp.json 2>/dev/null && echo "exists" || echo "not found"
+echo -n "ATLASSIAN_EMAIL:ATLASSIAN_API_TOKEN" | base64 | tr -d '\n'
 ```
 
-### Step 4 — Create or update .mcp.json
+Armazene o resultado como `BASE64_CREDENTIAL`.
 
-**Case A — File does not exist:**
+### Step 5 — Criar ou atualizar o MCP_FILE
 
-Create `.mcp.json` in the current directory with:
+Verifique se o arquivo existe:
+
+```bash
+ls MCP_FILE 2>/dev/null && echo "exists" || echo "not found"
+```
+
+**Se não existir:** crie com o conteúdo abaixo.
+**Se já existir:** faça merge apenas da entrada `atlassian-rovo-mcp` usando Python, preservando todos os outros servidores.
+
+#### Conteúdo do `.mcp.json` — modo `envvar`
+
+```json
+{
+  "mcpServers": {
+    "atlassian-rovo-mcp": {
+      "url": "https://mcp.atlassian.com/v1/mcp",
+      "headers": {
+        "Authorization": "${ATLASSIAN_MCP_CREDENTIALS}"
+      }
+    }
+  }
+}
+```
+
+#### Conteúdo do `.mcp.json` — modo `direct`
 
 ```json
 {
@@ -92,20 +99,16 @@ Create `.mcp.json` in the current directory with:
 }
 ```
 
-Replace `BASE64_CREDENTIAL` with the actual base64 string generated in Step 2.
-
-**Case B — File already exists:**
-
-**IMPORTANT**: When `.mcp.json` already exists, **never recreate or overwrite the file**.
-Only inject the `atlassian-rovo-mcp` entry into the existing `mcpServers` object, preserving all other servers.
-
-Use the following Python script to safely merge the entry:
+#### Script de merge (quando arquivo já existir)
 
 ```bash
 python3 - << 'PYEOF'
 import json
 
-with open('.mcp.json', 'r') as f:
+MCP_FILE = "PLACEHOLDER_MCP_FILE"
+HEADER_VALUE = "PLACEHOLDER_HEADER_VALUE"
+
+with open(MCP_FILE, 'r') as f:
     config = json.load(f)
 
 if 'mcpServers' not in config:
@@ -114,105 +117,86 @@ if 'mcpServers' not in config:
 config['mcpServers']['atlassian-rovo-mcp'] = {
     "url": "https://mcp.atlassian.com/v1/mcp",
     "headers": {
-        "Authorization": "Basic BASE64_CREDENTIAL"
+        "Authorization": HEADER_VALUE
     }
 }
 
-with open('.mcp.json', 'w') as f:
+with open(MCP_FILE, 'w') as f:
     json.dump(config, f, indent=2)
 
-print("✅ atlassian-rovo-mcp merged into .mcp.json")
-print("Existing servers preserved:", list(config['mcpServers'].keys()))
+print("atlassian-rovo-mcp merged. Servers:", list(config['mcpServers'].keys()))
 PYEOF
 ```
 
-Replace `BASE64_CREDENTIAL` with the actual base64 string generated in Step 2 **before running the script**.
+Substitua `PLACEHOLDER_MCP_FILE` e `PLACEHOLDER_HEADER_VALUE` pelos valores reais antes de executar.
 
-This approach guarantees:
-- All pre-existing MCP servers remain untouched.
-- If `atlassian-rovo-mcp` already exists, it is updated (credential rotation).
-- The JSON structure and formatting are preserved.
+### Step 6 — Registrar env var (apenas modo `envvar`)
 
-### Step 5 — Add .mcp.json to .gitignore
+Execute para registrar a variável em ambos os shells:
 
-Check if `.gitignore` exists and if `.mcp.json` is already listed. If not, append it:
+```bash
+echo "export ATLASSIAN_MCP_CREDENTIALS='Basic BASE64_CREDENTIAL'" >> ~/.zshrc
+echo "export ATLASSIAN_MCP_CREDENTIALS='Basic BASE64_CREDENTIAL'" >> ~/.bashrc
+source ~/.zshrc 2>/dev/null || true
+```
+
+### Step 7 — Proteção do arquivo (apenas escopo `local` + modo `direct`)
 
 ```bash
 grep -q "\.mcp\.json" .gitignore 2>/dev/null || echo ".mcp.json" >> .gitignore
 ```
 
-This prevents the API token from being accidentally committed to the repository.
+Se o escopo for `global`, não há necessidade de `.gitignore`.
+Se o modo for `envvar`, o arquivo não contém segredos — `.gitignore` é opcional.
 
-### Step 6 — Validate JSON
+### Step 8 — Validar JSON
 
 ```bash
-cat .mcp.json | python3 -m json.tool > /dev/null && echo "JSON valid"
+cat MCP_FILE | python3 -m json.tool > /dev/null && echo "JSON valid"
 ```
 
-If invalid, show the file content and error to the user and stop.
+Se inválido, exibir o erro e parar.
 
-### Step 7 — Confirm and instruct
+### Step 9 — Mensagem final (única saída para o usuário)
 
-Print a success summary:
+Exibir apenas:
 
 ```
-✅ Atlassian MCP configured at .mcp.json (current project directory)
+.mcp.json configurado em MCP_FILE
 
-Authentication: Basic auth (email:api_token base64-encoded)
-Endpoint: https://mcp.atlassian.com/v1/mcp
+Execute para autenticar (recarregue o terminal após):
 
-⚠️  .mcp.json was added to .gitignore to protect your API token.
+  source ~/.zshrc
+```
 
-Next steps:
-1. Restart Copilot CLI (close and reopen terminal or restart the CLI session).
-2. You can now ask Copilot CLI to interact with Jira, Confluence, and other Atlassian products.
+Se modo `direct` + escopo `local`:
 
-Example prompts after restart:
-  - "list my open Jira issues"
-  - "show the Confluence page for project X"
-  - "create a Jira ticket for bug Y"
+```
+.mcp.json configurado em ./.mcp.json
+.mcp.json adicionado ao .gitignore para proteger suas credenciais.
+
+Reinicie o Claude Code para ativar o servidor Atlassian.
 ```
 
 ---
 
-## .mcp.json Reference
+## Guardrails
 
-```json
-{
-  "mcpServers": {
-    "atlassian-rovo-mcp": {
-      "url": "https://mcp.atlassian.com/v1/mcp",
-      "headers": {
-        "Authorization": "Basic <base64(email:api_token)>"
-      }
-    }
-  }
-}
-```
-
-- `url` — Atlassian Remote MCP server endpoint (fixed, no customization needed).
-- `Authorization: Basic` — uses base64-encoded `email:api_token` as per Atlassian's Personal API Token spec.
-- The file lives in the **project directory** (not `~/.config/github-copilot/`), scoped per project.
+- Nunca exibir o token, o e-mail ou o base64 na resposta final
+- Fazer merge se o arquivo já existir — nunca sobrescrever
+- Se escopo global e arquivo não existir, criar `~/.claude/` se necessário antes de criar o arquivo
+- Modo `envvar` é sempre preferível por não expor segredos no arquivo
 
 ---
 
-## Security Notes
+## Referência rápida
 
-| Concern | Mitigation |
+| Escopo | Arquivo |
 |---|---|
-| Token in plaintext | `.mcp.json` is added to `.gitignore` automatically |
-| Token rotation | Re-run this skill with a new token to update the credential |
-| Shared machines | Use a service account API key (Bearer token) instead of personal tokens |
-| Least privilege | Create the API token with only the scopes needed (Jira read, Confluence read, etc.) |
+| Global | `~/.claude/mcp.json` |
+| Local | `./.mcp.json` |
 
----
-
-## Troubleshooting
-
-| Problem | Solution |
-|---|---|
-| `401 Unauthorized` | Check email and API token are correct; re-run skill to regenerate base64 |
-| `403 Forbidden` | Token may lack required scopes — regenerate at https://id.atlassian.com/manage-profile/security/api-tokens |
-| MCP server not responding | Verify network access to `https://mcp.atlassian.com` |
-| JSON parse error in .mcp.json | Validate with `cat .mcp.json \| python3 -m json.tool` |
-| Token accidentally committed | Revoke the token immediately at Atlassian, create a new one, and re-run this skill |
+| Modo | Header no JSON | Segredo em |
+|---|---|---|
+| envvar | `${ATLASSIAN_MCP_CREDENTIALS}` | `~/.zshrc` / `~/.bashrc` |
+| direct | `Basic <base64>` | `.mcp.json` (→ `.gitignore`) |
