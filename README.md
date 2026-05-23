@@ -15,6 +15,8 @@
 | `sec-multi-monorepo-add-nextjs` | NO | Adiciona o frontend (web/mobile) nos projetos dentro multi monorepo, independente na liguagem backend.|
 | `sec-multi-monorepo-kotlin-nextjs-hybrid-pipeline` | NO | Add pipeline buildando frontend e backend imbutido.|
 | `kotlin-spring` + `criar-endpoint-rest` | NO | Conven\u00e7\u00f5es e scaffolding completo (DDD layered) para projetos Kotlin + Spring multi-m\u00f3dulo, com `XRepository` (interface no dom\u00ednio) + `RepositoryImpl`. Instalado via `setup-kotlin-spring`.|
+| `setup-kotlin-gradle` + `crud-kotlin` | NO | Split da dupla acima em duas skills independentes: `setup-kotlin-gradle` faz apenas o scaffold de projeto (root Gradle, m\u00f3dulos, `buildingBlocks` com classes-base, docker, Makefile) e `crud-kotlin` gera endpoints REST completos (Migration + Domain + Infra + Application + Route + testes) seguindo as mesmas conven\u00e7\u00f5es DDD layered.|
+| `setup-kotlin-gradle` + `setup-kotlin-crud` | NO | Variante enxuta recomendada para MVP/CRUD: ~5 arquivos por endpoint, sem `XRepository`/`RepositoryImpl`, co-location por feature (Command+Handler+Result, Route+Request), Swagger m\u00ednimo, 1 teste `@WebMvcTest`. Ver `skills/setup-kotlin-crud/README.md` (tokens, review, custo de n\u00e3o usar skill).|
 | `simple-kotlin-spring` + `simple-criar-endpoint-rest` | NO | Variante enxuta da skill acima: **sem `XRepository` (interface) e sem `RepositoryImpl`**; o Handler injeta `XJpaRepository` direto. Economiza ~2 arquivos por aggregate e ~30% de tokens por endpoint. Instalado via `simple-setup-kotlin-spring`.|
 
 ---
