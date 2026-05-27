@@ -15,6 +15,21 @@ Configures the Atlassian MCP integration (Rovo) via the Remote MCP server at `ht
 
 ## Instructions
 
+### Step 0 — Detectar credenciais já configuradas
+
+Antes de qualquer pergunta, verifique se `ATLASSIAN_MCP_CREDENTIALS` já está definida no shell do usuário:
+
+```bash
+grep -h "ATLASSIAN_MCP_CREDENTIALS" ~/.zshrc ~/.bashrc 2>/dev/null | head -1
+```
+
+- **Se encontrar a variável:** defina `CREDENTIALS_ALREADY_SET=true` e `STORAGE=envvar`. Informe o usuário com uma única linha:
+  > `ATLASSIAN_MCP_CREDENTIALS` já encontrada no shell — pulando coleta de e-mail e token.
+  
+  Pule diretamente para o **Step 1** (apenas pergunte o escopo) e depois vá para o **Step 5**.
+
+- **Se não encontrar:** defina `CREDENTIALS_ALREADY_SET=false` e continue com os steps na ordem normal.
+
 ### Step 1 — Perguntar escopo
 
 Pergunte ao usuário onde o MCP deve ser registrado:
@@ -26,7 +41,7 @@ Armazene a escolha como `SCOPE` (`global` ou `local`) e defina `MCP_FILE` como:
 - `global` → `~/.claude/mcp.json`
 - `local` → `./.mcp.json`
 
-### Step 2 — Perguntar modo de armazenamento do token
+### Step 2 — Perguntar modo de armazenamento do token *(pular se `CREDENTIALS_ALREADY_SET=true`)*
 
 Pergunte ao usuário como deseja armazenar as credenciais:
 
@@ -35,7 +50,7 @@ Pergunte ao usuário como deseja armazenar as credenciais:
 
 Armazene a escolha como `STORAGE` (`envvar` ou `direct`).
 
-### Step 3 — Coletar credenciais
+### Step 3 — Coletar credenciais *(pular se `CREDENTIALS_ALREADY_SET=true`)*
 
 **Pergunta 1 — E-mail:**
 Pergunte o e-mail da conta Atlassian. Armazene como `ATLASSIAN_EMAIL`.
@@ -50,7 +65,7 @@ Armazene como `ATLASSIAN_API_TOKEN`.
 
 **IMPORTANTE:** Nunca exibir o token ou o base64 na resposta final.
 
-### Step 4 — Gerar o base64
+### Step 4 — Gerar o base64 *(pular se `CREDENTIALS_ALREADY_SET=true`)*
 
 ```bash
 echo -n "ATLASSIAN_EMAIL:ATLASSIAN_API_TOKEN" | base64 | tr -d '\n'
@@ -130,7 +145,7 @@ PYEOF
 
 Substitua `PLACEHOLDER_MCP_FILE` e `PLACEHOLDER_HEADER_VALUE` pelos valores reais antes de executar.
 
-### Step 6 — Registrar env var (apenas modo `envvar`)
+### Step 6 — Registrar env var (apenas modo `envvar` e `CREDENTIALS_ALREADY_SET=false`)
 
 Execute para registrar a variável em ambos os shells:
 
