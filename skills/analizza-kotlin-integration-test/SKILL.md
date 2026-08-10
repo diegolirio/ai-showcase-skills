@@ -1,11 +1,11 @@
 ---
-name: quality-setup-integration-test-module
-description: 'Configura testes de integracao em projetos Kotlin + Spring Boot, adaptando-se automaticamente a estrutura do projeto: cria um modulo dedicado (`{base}-integration-tests`) em projetos multi-modulo, ou configura tudo dentro de `src/test/` quando o projeto for single-module (sem submodulos). Move os testes de integracao, centraliza o BaseIntegrationTest, isola libs pesadas de teste, configura jacoco, tasks Gradle test/integrationTest, stage no Jenkinsfile e regra ArchUnit de cobertura de entrypoints. Use quando o usuario pedir "criar modulo de testes de integracao", "integration-tests module", "separar testes de integracao", "reduzir tempo de testcontainers" ou "setup integration test module".'
+name: analizza-kotlin-integration-test
+description: 'Configura testes de integracao em projetos Kotlin + Spring Boot, adaptando-se automaticamente a estrutura do projeto: cria um modulo dedicado (`{base}-integration-tests`) em projetos multi-modulo, ou configura tudo dentro de `src/test/` quando o projeto for single-module (sem submodulos). Move os testes de integracao, centraliza o BaseIntegrationTest, isola libs pesadas de teste, configura jacoco, tasks Gradle test/integrationTest, stage no Jenkinsfile e regra ArchUnit de cobertura de entrypoints. Use quando o usuario pedir "criar modulo de testes de integracao", "integration-tests module", "separar testes de integracao", "reduzir tempo de testcontainers", "setup integration test module" ou "analizza kotlin integration test".'
 argument-hint: 'Opcional: nome base do projeto (ex: pp) e lista de modulos. Se omitido, a skill descobre a partir de settings.gradle.kts.'
 user-invocable: true
 ---
 
-# Setup Integration Test Module
+# Analizza Kotlin Integration Test
 
 Configura a infraestrutura de testes de integracao do projeto, reduzindo o tempo de carregamento de
 Testcontainers e de contextos Spring. O caminho concreto depende da estrutura do projeto, detectada
