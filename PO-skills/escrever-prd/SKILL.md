@@ -1,30 +1,30 @@
 ---
 name: escrever-prd
-description: "Use quando o usuário quiser transformar o preview aprovado de uma entrevista de refinamento (user story + critérios de aceite) em um PRD e publicá-lo no Confluence. Recebe a entrada gerada pela skill refinamento e não repete a entrevista. É a segunda etapa da cadeia refinamento -> escrever-prd -> escrever-jiracard."
+description: "Use quando o usuário quiser transformar o preview aprovado e o parecer de prontidão em um PRD e publicá-lo no Confluence. Recebe entradas das skills refinamento e dev-refinamento-card-jira. É a terceira etapa da cadeia refinamento -> dev-refinamento-card-jira -> escrever-prd -> escrever-jiracard."
 ---
 
 # Escrever PRD no Confluence
 
-Transforma o preview aprovado de uma entrevista de refinamento (user story, critérios de aceite, fora de escopo) em um PRD estruturado e o publica como uma única página no Confluence.
+Transforma o preview aprovado de uma entrevista de refinamento (user story, critérios de aceite, fora de escopo) e o parecer de prontidão da avaliação do card em um PRD estruturado, publicando-o como uma única página no Confluence.
 
 ## Cadeia de skills
 
 ```
-refinamento  ->  escrever-prd  ->  escrever-jiracard
-(entrevista)     (PRD no Confluence)  (card/subtasks no Jira)
+refinamento  ->  dev-refinamento-card-jira  ->  escrever-prd  ->  escrever-jiracard
+(entrevista)     (avalia prontidão)             (PRD)            (Jira)
 ```
 
-Esta skill é a segunda da cadeia. Ela **não conduz entrevista** — usa o preview já aprovado, presente na conversa atual (produzido pela skill `refinamento`). Ao final, pergunta ao PO se deseja seguir para `escrever-jiracard`, passando o link da página do Confluence criada.
+Esta skill é a terceira da cadeia. Ela **não conduz entrevista** — usa o preview já aprovado, presente na conversa atual (produzido pela skill `refinamento`), e o parecer de prontidão produzido pela skill `dev-refinamento-card-jira`. Ao final, pergunta ao PO se deseja seguir para `escrever-jiracard`, passando o link da página do Confluence criada.
 
 <HARD-GATE>
-Não escreva nada no Confluence sem ter um preview de negócio já aprovado disponível na conversa (vindo da skill `refinamento`) e sem o link da página pai informado pelo PO. Se já existir uma página de PRD para a mesma demanda, não decida por conta própria — pergunte ao PO se deve atualizar a existente ou criar uma nova.
+Não escreva nada no Confluence sem ter um preview de negócio já aprovado disponível na conversa (vindo da skill `refinamento`), o parecer de prontidão (vindo da skill `dev-refinamento-card-jira`) e o link da página pai informado pelo PO. Se já existir uma página de PRD para a mesma demanda, não decida por conta própria — pergunte ao PO se deve atualizar a existente ou criar uma nova.
 </HARD-GATE>
 
 ## Checklist
 
 Você DEVE criar uma tarefa para cada item abaixo e completá-los em ordem:
 
-1. **Confirmar o preview de entrada** — reaproveitar o preview aprovado na conversa (user story + AC + fora de escopo); se não houver um preview claro na conversa, pedir ao PO para colar o conteúdo ou rodar a skill `refinamento` antes
+1. **Confirmar entradas** — reaproveitar o preview aprovado na conversa (user story + AC + fora de escopo) e o parecer de prontidão; se não houver um preview claro ou parecer disponível, pedir ao PO para colar o conteúdo ou rodar as skills anteriores antes
 2. **Pedir o link/ID da página pai no Confluence** — a nova página será criada como filha dela
 3. **Verificar se já existe um PRD para a mesma demanda** — buscar por título/contexto semelhante no Confluence
 4. **Se existir conflito**, perguntar ao PO: atualizar a página existente ou criar uma nova
@@ -38,7 +38,7 @@ Você DEVE criar uma tarefa para cada item abaixo e completá-los em ordem:
 
 ```dot
 digraph escrever_prd {
-    "Confirmar preview de entrada" [shape=box];
+    "Confirmar preview + parecer" [shape=box];
     "Pedir link da pagina pai (Confluence)" [shape=box];
     "Verificar PRD existente para a demanda" [shape=box];
     "Ja existe PRD?" [shape=diamond];
@@ -50,7 +50,7 @@ digraph escrever_prd {
     "Confirmar ao PO com link" [shape=box];
     "Perguntar: seguir para escrever-jiracard?" [shape=doublecircle];
 
-    "Confirmar preview de entrada" -> "Pedir link da pagina pai (Confluence)";
+    "Confirmar preview + parecer" -> "Pedir link da pagina pai (Confluence)";
     "Pedir link da pagina pai (Confluence)" -> "Verificar PRD existente para a demanda";
     "Verificar PRD existente para a demanda" -> "Ja existe PRD?";
     "Ja existe PRD?" -> "Perguntar ao PO: atualizar ou criar nova?" [label="sim"];
@@ -86,8 +86,8 @@ digraph escrever_prd {
 
 **Confirmando a entrada:**
 
-- Reaproveite o preview já aprovado na conversa atual. Não peça ao PO para repetir a entrevista.
-- Se a conversa não tiver um preview reconhecível (por exemplo, a skill foi chamada isoladamente, em uma sessão nova), peça ao PO para colar o conteúdo do preview ou rodar a skill `refinamento` primeiro.
+- Reaproveite o preview já aprovado e o parecer de prontidão da conversa atual. Não peça ao PO para repetir a entrevista.
+- Se a conversa não tiver um preview reconhecível ou o parecer de prontidão (por exemplo, a skill foi chamada isoladamente, em uma sessão nova), peça ao PO para colar o conteúdo ou rodar as skills `refinamento` e `dev-refinamento-card-jira` primeiro.
 
 **Localizando a página pai e checando duplicidade:**
 
@@ -97,7 +97,7 @@ digraph escrever_prd {
 
 **Montando e validando o PRD:**
 
-- Preencha as 12 seções do template usando o conteúdo do preview de entrada e o contexto lido da issue de CONTEXTO (se disponível na conversa).
+- Preencha as 12 seções do template usando o conteúdo do preview de entrada, o parecer de prontidão e o contexto lido da issue de CONTEXTO (se disponível na conversa).
 - Mostre o PRD montado ao PO antes de publicar. Ajuste conforme feedback até aprovação.
 
 **Publicando:**

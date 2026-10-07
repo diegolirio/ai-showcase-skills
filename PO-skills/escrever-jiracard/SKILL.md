@@ -1,35 +1,70 @@
 ---
 name: escrever-jiracard
-description: "Use quando o usuário quiser organizar no Jira o conteúdo já refinado e documentado (PRD no Confluence), escrevendo em um card único ou quebrando em subtasks, conforme decisão do PO. É a terceira e última etapa da cadeia refinamento -> escrever-prd -> escrever-jiracard."
+description: "Use quando o usuário quiser organizar no Jira o conteúdo já refinado, avaliado e documentado (PRD no Confluence), em card único ou subtasks. É a quarta e última etapa da cadeia refinamento -> dev-refinamento-card-jira -> escrever-prd -> escrever-jiracard."
 ---
 
 # Escrever Jira Card
 
-Escreve no Jira card informado pelo PO o conteúdo já refinado (user story, critérios de aceite) e a referência ao PRD no Confluence, organizando tudo em um único card ou quebrando em subtasks, conforme decisão do PO.
+Escreve no Jira card informado pelo PO o conteúdo já refinado (user story, critérios de aceite), o parecer de prontidão aprovado e a referência ao PRD no Confluence, organizando tudo em um único card ou quebrando em subtasks, conforme decisão do PO.
 
 ## Cadeia de skills
 
 ```
-refinamento  ->  escrever-prd  ->  escrever-jiracard
-(entrevista)     (PRD no Confluence)  (card/subtasks no Jira)
+refinamento  ->  dev-refinamento-card-jira  ->  escrever-prd  ->  escrever-jiracard
+(entrevista)     (avalia prontidão)             (PRD)            (Jira)
 ```
 
-Esta skill é a terceira e última da cadeia. Ela recebe o link da página do Confluence (PRD) criada pela `escrever-prd`, e o preview de negócio já aprovado, ambos presentes na conversa atual.
+Esta skill é a quarta e última da cadeia. Ela recebe o link da página do Confluence (PRD) criada pela `escrever-prd`, o preview de negócio já aprovado e o parecer de prontidão, presentes na conversa atual.
 
 <HARD-GATE>
 Não escreva nada no Jira sem o link do card informado pelo PO. Não decida por conta própria entre card único ou subtasks — isso é sempre uma pergunta ao PO. Se houver conflito com conteúdo já existente no card, pergunte ao PO se deve alterar ou complementar.
+O conteúdo de descrição no Jira deve seguir obrigatoriamente o template de seções desta skill. Não mude nomes, ordem ou estrutura das seções.
 </HARD-GATE>
+
+## Template obrigatório (formato Jira)
+
+Sempre monte a descrição do card principal no formato abaixo, nesta ordem e com estes títulos:
+
+```text
+DESCRIÇÃO
+
+.
+
+CRITÉRIOS DE ACEITE
+
+.
+
+CENÁRIOS DE TESTES
+
+.
+
+DEPENDÊNCIAS E RISCOS
+
+.
+
+DOCUMENTAÇÕES
+
+.
+```
+
+Regras de preenchimento:
+
+- Preserve os títulos exatamente como estão (caixa alta e acentuação).
+- Preserve a ordem das seções.
+- Substitua `.` pelo conteúdo aprovado no refinamento/PRD.
+- Se alguma informação não existir ainda, mantenha `.` naquela seção (não remova a seção).
+- Em `DOCUMENTAÇÕES`, inclua o link do PRD no Confluence e outros artefatos relevantes (ex.: proposta/design) quando existirem.
 
 ## Checklist
 
 Você DEVE criar uma tarefa para cada item abaixo e completá-los em ordem:
 
-1. **Confirmar as entradas disponíveis** — preview de negócio aprovado e link do PRD no Confluence (vindos da conversa atual); se estiverem ausentes, pedir ao PO
+1. **Confirmar as entradas disponíveis** — preview de negócio aprovado, parecer de prontidão e link do PRD no Confluence (vindos da conversa atual); se estiverem ausentes, pedir ao PO
 2. **Pedir o link do Jira card** onde o conteúdo será organizado
 3. **Ler o card** via MCP Atlassian, para conhecer o conteúdo já existente
 4. **Perguntar ao PO**: escrever tudo em um único card, ou quebrar em subtasks?
    - Se o PO estiver em dúvida, pode-se sugerir a quebra em subtasks como forma de facilitar a organização com o time técnico depois — mas a decisão final é sempre do PO
-5. **Montar o conteúdo** a ser escrito (card único ou lista de subtasks propostas)
+5. **Montar o conteúdo** a ser escrito (card único ou lista de subtasks propostas) usando o template obrigatório de descrição Jira
 6. **Mostrar o plano ao PO** e aguardar validação
 7. **Mini self-review** — checar conflito com o conteúdo já existente no card
 8. **Se houver conflito**, perguntar ao PO: alterar ou complementar?
@@ -40,7 +75,7 @@ Você DEVE criar uma tarefa para cada item abaixo e completá-los em ordem:
 
 ```dot
 digraph escrever_jiracard {
-    "Confirmar entradas (preview + link PRD)" [shape=box];
+    "Confirmar entradas (preview + parecer + PRD)" [shape=box];
     "Pedir link do Jira card" [shape=box];
     "Ler card (MCP)" [shape=box];
     "Perguntar: card unico ou subtasks?" [shape=box];
@@ -53,7 +88,7 @@ digraph escrever_jiracard {
     "Escrever no Jira" [shape=box];
     "Confirmar ao PO com link(s)" [shape=doublecircle];
 
-    "Confirmar entradas (preview + link PRD)" -> "Pedir link do Jira card";
+    "Confirmar entradas (preview + parecer + PRD)" -> "Pedir link do Jira card";
     "Pedir link do Jira card" -> "Ler card (MCP)";
     "Ler card (MCP)" -> "Perguntar: card unico ou subtasks?";
     "Perguntar: card unico ou subtasks?" -> "Montar conteudo (card ou subtasks)";
@@ -75,7 +110,7 @@ digraph escrever_jiracard {
 
 **Confirmando as entradas:**
 
-- Reaproveite o preview de negócio aprovado e o link do PRD no Confluence, ambos já presentes na conversa (vindos de `refinamento` e `escrever-prd`).
+- Reaproveite o preview de negócio aprovado, o parecer de prontidão e o link do PRD no Confluence, já presentes na conversa (vindos de `refinamento`, `dev-refinamento-card-jira` e `escrever-prd`).
 - Se algum estiver ausente (por exemplo, a skill foi chamada isoladamente), peça ao PO para fornecer o conteúdo ou os links necessários antes de seguir.
 
 **Lendo o card de destino:**
@@ -91,8 +126,8 @@ digraph escrever_jiracard {
 
 **Montando e validando o plano:**
 
-- Se card único: monte o conteúdo consolidado (user story, critérios de aceite, link do PRD).
-- Se subtasks: proponha uma lista de subtasks com títulos e descrições em linguagem de negócio, cada uma referenciando o card principal e o PRD.
+- Se card único: monte o conteúdo consolidado dentro do template obrigatório (`DESCRIÇÃO`, `CRITÉRIOS DE ACEITE`, `CENÁRIOS DE TESTES`, `DEPENDÊNCIAS E RISCOS`, `DOCUMENTAÇÕES`).
+- Se subtasks: proponha uma lista de subtasks com títulos e descrições em linguagem de negócio. No card principal, mantenha sempre a descrição no template obrigatório e referencie o PRD.
 - Mostre o plano ao PO antes de escrever em qualquer lugar. Ajuste conforme feedback até aprovação.
 
 **Mini self-review (antes de escrever):**
@@ -103,5 +138,6 @@ digraph escrever_jiracard {
 
 - Preserve o conteúdo já existente no card por padrão.
 - Aplique a decisão do PO (alterar vs. complementar) exatamente como definida no self-review.
+- Garanta que a descrição final do card principal esteja no template obrigatório e na ordem correta das seções.
 - Inclua o link da página do Confluence (PRD) na atualização, para rastreabilidade entre negócio e documentação.
 - Após escrever, confirme ao PO com o(s) link(s) final(is) — card principal e, se aplicável, cada subtask criada.
